@@ -46,12 +46,12 @@ class RedirectLog extends Controller
 
             $last10Days = DB::table('redirect_logs')
             ->select('*')
-            ->whereRaw("created_at < DATE_SUB('" .Carbon::now() . "', INTERVAL 10 DAY)")
+            ->whereRaw("created_at > DATE_SUB('" .Carbon::now() . "', INTERVAL 10 DAY)")
             ->count();
 
             $uniqueIds = DB::table('redirect_logs')
             ->select('request_ip', DB::raw('count(*) as total'))
-            ->whereRaw("created_at < DATE_SUB('" .Carbon::now() . "', INTERVAL 10 DAY)")
+            ->whereRaw("created_at > DATE_SUB('" .Carbon::now() . "', INTERVAL 10 DAY)")
             ->havingRaw('SUM(request_ip)')
             ->groupBy('request_ip')
             ->count();
